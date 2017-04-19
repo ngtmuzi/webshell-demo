@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "ansi-html": "^0.0.7",
+    "socket.io": "^1.7.3"
+  }
+}
