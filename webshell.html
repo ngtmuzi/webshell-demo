@@ -40,7 +40,7 @@
 
 <script>
 
-    //==================vue渲染逻辑=================
+  //==================vue渲染逻辑=================
   var app = new Vue({
     el      : '#app',
     data    : {
@@ -76,13 +76,26 @@
   socket.on('connect', function () {
     console.log('connect succeed');
 
-    let id = 'time';
+    var id = '', file = '';
     try {
-      id = /\?id\=(\w+)$/.exec(location.search)[1];  //从url上获取id，否则默认订阅时间流
-    }catch(err){
+      id = /[?&]id\=([^=&]+)/.exec(location.search)[1];  //从url上获取id
+    } catch (err) {
     }
 
-    socket.emit('sub', id);
+    try {
+      file = /[?&]file\=([^=&]+)/.exec(location.search)[1];
+    } catch (err) {
+    }
+
+    if (id) {
+      console.log('sub', id);
+      socket.emit('sub', id);
+    } else if (file) {
+      console.log('watchFile', file);
+      socket.emit('watchFile', file);
+    } else {
+      app.rawLines.push('Nothing specify params. Try to use "?file=" or "?id=time" to read a stream.')
+    }
   });
 
 
